@@ -1,0 +1,48 @@
+name: EconomyPluginRM
+version: '${project.version}'
+main: zartox.economypluginrm.EconomyPluginRM
+api-version: '1.20'
+authors: [Zartox]
+commands:
+  money:
+    description: Add/Remove money to/from a player
+    usage: /addmoney <PlayerName> <Amount>
+  pay:
+    description: Send money to another player
+    usage: /pay <PlayerName> <Amount>
+  payanon:
+    description: Send money to another player without displaying your name
+    usage: /payanon <PlayerName> <Amount>
+  checkmoney:
+    description: Print the amount of money you have in the chat
+    usage: /checkmoney
+  offeradd:
+    description: Adds an offer to the market with the stack in hand
+    usage: /offer
+  market:
+    description: Show all the offers on the market at this time in the chat
+    usage: /market
+  offerremove:
+    description: Cancel an offer you made previously
+    usage: /offerremove
+  offershowmine:
+    description: Shows your offers in the market
+    usage: /offershowmine
+  offerBuy:
+    description: Buy an offer in the market
+    usage: /offerbuy
+  enablemarket:
+    description: Enable or disable the market and save the status
+    usage: /enablemarket <true/false>
+  sell:
+    description: Sells all diamond in your hand.
+    usage: /sell
+  sellall:
+    description: Sells all diamonds in your inventory.
+    usage: /sellall
+  sellprice:
+    description: Set the diamond price.
+    usage: /sellprice price<int>
+  savelogs:
+    description: Save the logs of the EconomyPluginRM manually.
+    usage: /savelogs
