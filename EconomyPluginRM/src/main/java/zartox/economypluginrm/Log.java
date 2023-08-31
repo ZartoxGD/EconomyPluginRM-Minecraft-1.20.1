@@ -25,5 +25,4 @@ public class Log {
         LocalDateTime now = LocalDateTime.now();
         return dtf.format(now);
     }
-
 }

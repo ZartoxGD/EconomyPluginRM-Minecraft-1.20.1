@@ -1,13 +1,17 @@
 package zartox.economypluginrm;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.Chest;
-import org.bukkit.block.Sign;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.block.*;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.block.sign.Side;
 import org.bukkit.block.sign.SignSide;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.DoubleChestInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,7 +28,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class EventsListener implements Listener {
@@ -33,6 +41,11 @@ public class EventsListener implements Listener {
 
     public EventsListener(Plugin _plugin){
         plugin = _plugin;
+    }
+
+    @EventHandler
+    public void onPlayerTakeDamage(EntityDamageEvent event){
+
     }
 
     @EventHandler
@@ -45,6 +58,17 @@ public class EventsListener implements Listener {
             EconomyPluginRM.playersData.add(playerData);
         }
 
+        // 12 seconds (240 ticks)
+        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 240, 100));
+        player.sendMessage(ChatColor.GREEN + "You are now invincible for 12sec !");
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+                player.sendMessage(ChatColor.GREEN + "You are not invincible anymore !");
+            }
+        }.runTaskLater(plugin, 240L);
     }
 
     private void CreateShop(Material material, int buyPerClick, int price, int stockAmount, Chest chest, Sign sign, Player player){
@@ -56,16 +80,13 @@ public class EventsListener implements Listener {
 
     private void CreatePrivateChest(Block chest, Block sign, String[] authorizedPlayersName, Player player){
         PrivateChest privateChest = new PrivateChest(chest.getLocation(), sign.getLocation(), authorizedPlayersName, player.getName());
-        EconomyPluginRM.privateChests.add(privateChest);
 
+        EconomyPluginRM.privateChests.add(privateChest);
         player.sendMessage(ChatColor.GREEN + "Private chest created ! Authorized players: " + String.join(", ", authorizedPlayersName));
     }
 
     private boolean IsShopSign(String signFirstLine){
-        if(!Objects.equals(signFirstLine, "[Shop]")){
-            return false;
-        }
-        return true;
+        return Objects.equals(signFirstLine, "[Shop]") || Objects.equals(signFirstLine, "Shop") || Objects.equals(signFirstLine, "[shop]") || Objects.equals(signFirstLine, "shop");
     }
 
     private boolean IsWallSign(Sign sign){
@@ -159,10 +180,10 @@ public class EventsListener implements Listener {
             player.sendMessage(ChatColor.RED + "Ex: 64:1000 which means that on each player click on the sign he would buy 64 " + shopMaterial.toString() + " for 1000$");
             return 0;
         }
-    }
+    }//OK
 
     private boolean IsPrivateChest(String firstLine){
-        return Objects.equals(firstLine, "[Private]");
+        return Objects.equals(firstLine, "[Private]") || Objects.equals(firstLine, "[private]") || Objects.equals(firstLine, "Private") || Objects.equals(firstLine, "private");
     }
 
     @EventHandler
@@ -437,9 +458,6 @@ public class EventsListener implements Listener {
                 if(!chest.IsPlayerAuthorized(event.getPlayer())){
                     event.getPlayer().sendMessage(ChatColor.RED + "This chest does not belong to you...");
                     event.setCancelled(true);
-                }
-                else{
-                    event.getPlayer().sendMessage(ChatColor.GREEN + "Authorized !");
                 }
             }
         }

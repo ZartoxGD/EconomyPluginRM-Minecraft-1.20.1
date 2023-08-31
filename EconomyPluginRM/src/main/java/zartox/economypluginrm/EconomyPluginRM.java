@@ -24,6 +24,7 @@ public final class EconomyPluginRM extends JavaPlugin {
     public static ArrayList<PlayerData> playersData = new ArrayList<>();
     public static ArrayList<PhysicalShop> physicalShops = new ArrayList<>();
     public static ArrayList<PrivateChest> privateChests = new ArrayList<>();
+
     public static EconomySettings settings = new EconomySettings();
     public static EconomyPluginRM instance;
 
@@ -245,23 +246,14 @@ public final class EconomyPluginRM extends JavaPlugin {
     }
 
     private void registerCommands(){
-        getCommand("money").setExecutor(new CommandMoney());
-        getCommand("pay").setExecutor(new CommandPay());
-        getCommand("payanon").setExecutor(new CommandPayAnon());
-        getCommand("checkmoney").setExecutor(new CommandCheckMoney());
 
-        getCommand("offeradd").setExecutor(new CommandOfferAdd());
-        getCommand("offerremove").setExecutor(new CommandOfferRemove());
-        getCommand("offershowmine").setExecutor(new CommandOfferShowMine());
-        getCommand("offerbuy").setExecutor(new CommandOfferBuy());
-        getCommand("market").setExecutor(new CommandMarket());
-        getCommand("enablemarket").setExecutor(new CommandEnableMarket());
-
-        getCommand("sell").setExecutor(new CommandSell());
-        getCommand("sellall").setExecutor(new CommandSellAll());
-        getCommand("sellprice").setExecutor(new CommandSellPrice());
 
         getCommand("savelogs").setExecutor(new CommandSaveLogs());
+
+        getCommand("destroy").setExecutor(new CommandDestroy());
+        getCommand("listchest").setExecutor(new CommandListChests());
+
+        getCommand("suicide").setExecutor(new CommandSuicide());
     }
 
     private void registerEvents(){
@@ -271,7 +263,6 @@ public final class EconomyPluginRM extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
         try {
             Shop.Save();
             SavePlayerData();

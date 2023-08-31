@@ -38,14 +38,14 @@ public class PrivateChest {
     }
 
     public boolean IsPlayerAuthorized(Player player){
-        String playerName = player.getName();
+        String playerName = player.getName().toLowerCase();
 
-        if(playerName.equals(OwnerName)){
+        if(playerName.equals(OwnerName.toLowerCase())){
             return true;
         }
 
         for(String name : AuthorizedPlayersName){
-            if(playerName.equals(name)){
+            if(playerName.equals(name.toLowerCase())){
                 return true;
             }
         }

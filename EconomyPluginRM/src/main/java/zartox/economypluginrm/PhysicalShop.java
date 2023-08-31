@@ -7,6 +7,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.block.sign.Side;
 import org.bukkit.block.sign.SignSide;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.Inventory;
@@ -14,6 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.checkerframework.checker.units.qual.C;
 import zartox.economypluginrm.serializableObjects.SerializablePhysicalShop;
+
+import java.util.Map;
 
 public class PhysicalShop {
 
@@ -75,6 +78,8 @@ public class PhysicalShop {
         OwnerPlayerData.MoneyAmount += Price;
 
         buyerPlayer.sendMessage(ChatColor.GREEN + "You just bought " + BuyPerClick + " " + ShopMaterial + " from " + OwnerPlayerData.Name + " for " + Price + "$ !");
+        buyerPlayer.playSound(buyerPlayer.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+        ShopSign.getLocation().getWorld().playEffect(ShopChest.getLocation(), Effect.BONE_MEAL_USE, 250);
         EconomyPluginRM.SendMessageToOnlinePlayer(OwnerPlayerData.Name, ChatColor.GREEN + "You just sold " + BuyPerClick + " " + ShopMaterial + " to " + buyerPlayer.getName() + " for " + Price + "$ !");
         //Bukkit.getPlayerExact(OwnerPlayerData.Name).sendMessage(ChatColor.GREEN + "You just sold " + BuyPerClick + " " + ShopMaterial + " to " + buyerPlayer.getName() + " for " + Price + "$ !");
         VerifyStock();
